@@ -26,6 +26,8 @@ public class PostService {
 
     public PostDto getPostById(int id) {
         Optional<Post> post = postMapper.findPostById(id);
+        if(post.isEmpty())
+            return null;
         return modelMapper.map(post, PostDto.class);
     }
 

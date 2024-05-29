@@ -24,13 +24,13 @@ import java.util.List;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler  {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RestApiException.class)
     public ApiResponse<Void> handleCustomException(RestApiException e) {
         ErrorCode errorCode = e.getErrorCode();
         return ApiResponse.createError(errorCode);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ApiResponse<Void> handleIllegalArgument(IllegalArgumentException e) {
         log.warn("IllegalArgument ",e);

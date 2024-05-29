@@ -35,7 +35,7 @@ public class PostController {
     public ApiResponse<PostDto> findPostById(@PathVariable int id) {
         PostDto post = postService.getPostById(id);
         if(post == null)
-            throw new RestApiException(CommonErrorCode.INVALID_PARAMETER);
+            throw new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND);
         return ApiResponse.success(post);
     }
 
