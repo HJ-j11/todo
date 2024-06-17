@@ -1,10 +1,7 @@
 package com.example.todo.entity;
 
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -12,9 +9,14 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Member {
     private Long id;
     private String name;
+    private String username;
+    private String password;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private UserRole userRole;
 }
