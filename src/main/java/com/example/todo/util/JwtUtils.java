@@ -1,6 +1,6 @@
 package com.example.todo.util;
 
-import com.example.todo.entity.jwt.JwtToken;
+import com.example.todo.entity.jwt.jwtResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -32,7 +32,7 @@ public class JwtUtils {
      * 토큰 생성
      */
 
-    public JwtToken generateTokenByUserDetails(Authentication authentication) {
+    public jwtResponse generateTokenByUserDetails(Authentication authentication) {
         /*
          * 권한 가져오기
          * */
@@ -45,14 +45,25 @@ public class JwtUtils {
          * Access Token 생성
          * */
         String accessToken = createToken(authorities, userDetails.getUsername());
+        
+        /*
+        * Refresh Token 생성
+        * */
+        
         String refreshToken = Jwts.builder()
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(new SecretKeySpec(secretKey.getBytes(),
                         SignatureAlgorithm.HS512.getJcaName()))
                 .compact();
 
-        return JwtToken.builder()
+        /*
+        * Jwt Response 반환
+        * */
+        
+        return jwtResponse.builder()
                 .grantType("Bearer")
+                .username(userDetails.getUsername())
+                .roles(Arrays.stream(authorities.split(",")).toList())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -64,7 +75,7 @@ public class JwtUtils {
                 .claim("auth", authorities)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 1시간
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 ))
                 .signWith(new SecretKeySpec(secretKey.getBytes(), SignatureAlgorithm.HS512.getJcaName()))
                 .compact();
     }
@@ -83,8 +94,10 @@ public class JwtUtils {
      */
     private Claims getAllClaims(String token) {
         log.info("getAllClaims token = {}", token);
-        return Jwts.parser()
+
+        return Jwts.parserBuilder()
                 .setSigningKey(secretKey.getBytes())
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }

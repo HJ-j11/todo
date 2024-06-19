@@ -8,34 +8,45 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class UserTypeHandler extends BaseTypeHandler<UserRole> {
+public class UserTypeHandler extends BaseTypeHandler<List<UserRole>> {
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, UserRole parameter, JdbcType jdbcType) throws SQLException {
-        ps.setString(i, parameter.getValue());
+    public void setNonNullParameter(PreparedStatement ps, int i, List<UserRole> parameter, JdbcType jdbcType) throws SQLException {
+        String roles = String.join(",", parameter.stream().map(UserRole::getValue).toArray(String[]::new));
+        ps.setString(i, roles);
     }
 
     @Override
-    public UserRole getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        String role = rs.getString(columnName);
-        if(role == null)
+    public List<UserRole> getNullableResult(ResultSet rs, String columnName) throws SQLException {
+        String roles = rs.getString(columnName);
+        if(roles == null || roles.isEmpty())
             return null;
-        return UserRole.valueOf(role.toUpperCase());
+        return convertRolesToList(roles);
     }
 
     @Override
-    public UserRole getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        String role = rs.getString(columnIndex);
-        if(role == null)
+    public List<UserRole> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+        String roles = rs.getString(columnIndex);
+        if(roles == null || roles.isEmpty())
             return null;
-        return UserRole.valueOf(role.toUpperCase());
+        return convertRolesToList(roles);
     }
 
     @Override
-    public UserRole getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        String role = cs.getString(columnIndex);
-        if(role == null)
+    public List<UserRole> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+        String roles = cs.getString(columnIndex);
+        if(roles == null || roles.isEmpty())
             return null;
-        return UserRole.valueOf(role.toUpperCase());
+        return convertRolesToList(roles);
+    }
+
+    private List<UserRole> convertRolesToList(String roles) {
+        List<UserRole> userRoles = new ArrayList<>();
+        for (String role : roles.split(",")) {
+            userRoles.add(UserRole.valueOf(role.trim().toUpperCase()));
+        }
+        return userRoles;
     }
 }

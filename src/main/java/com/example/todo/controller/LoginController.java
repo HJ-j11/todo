@@ -3,7 +3,7 @@ package com.example.todo.controller;
 import com.example.todo.dto.LoginDto;
 import com.example.todo.dto.SignUpDto;
 import com.example.todo.dto.api.ApiResponse;
-import com.example.todo.entity.jwt.JwtToken;
+import com.example.todo.entity.jwt.jwtResponse;
 import com.example.todo.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +20,11 @@ public class LoginController {
 
     @Operation(summary = "로그인")
     @PostMapping("/sign-in")
-    public ApiResponse<JwtToken> signIn(@RequestBody LoginDto loginDto) {
+    public ApiResponse<jwtResponse> signIn(@RequestBody LoginDto loginDto) {
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
-        JwtToken jwtToken = memberService.signIn(username, password);
-        return ApiResponse.success(jwtToken);
+        jwtResponse jwtResponse = memberService.signIn(username, password);
+        return ApiResponse.success(jwtResponse);
     }
 
     @Operation(summary = "회원 가입")

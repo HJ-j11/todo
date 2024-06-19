@@ -4,6 +4,7 @@ package com.example.todo.entity;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,5 +19,5 @@ public class Member {
     private String password;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private UserRole userRole;
+    private List<UserRole> userRoles;
 }

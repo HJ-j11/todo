@@ -4,7 +4,7 @@ package com.example.todo.service;
 import com.example.todo.dto.MemberDto;
 import com.example.todo.dto.SignUpDto;
 import com.example.todo.entity.Member;
-import com.example.todo.entity.jwt.JwtToken;
+import com.example.todo.entity.jwt.jwtResponse;
 import com.example.todo.mapper.MemberMapper;
 import com.example.todo.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class MemberService {
         return modelMapper.map(member, MemberDto.class);
     }
 
-    public JwtToken signIn(String username, String password) {
+    public jwtResponse signIn(String username, String password) {
         /*
          * 1. Login ID/PW 를 기반으로 Authentication 객체 생성
          * 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false

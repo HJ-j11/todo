@@ -42,9 +42,9 @@ public class SecurityConfig {
                                 "/error",
                                 "/swagger-ui/**",
                                 "/swagger-resources/**",
-                                "/v3/api-docs/**", "/", "/posts/**").permitAll()
+                                "/v3/api-docs/**", "/").permitAll()
                         .requestMatchers("/auth/**").permitAll()
-//                        .requestMatchers("/posts/**").hasRole("USER")
+                        .requestMatchers("/posts/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/members/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

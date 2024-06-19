@@ -14,7 +14,7 @@ public class ApiResponse <T> {
 
     private String status;
     private String message;
-    private T data;
+    private T response;
 
     public static <T> ApiResponse<T> success(T data) {
         return new ApiResponse<>(SUCCESS_STATUS, HttpStatus.OK.getReasonPhrase(), data );
