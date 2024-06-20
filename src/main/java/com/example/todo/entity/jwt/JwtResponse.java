@@ -7,7 +7,7 @@ import java.util.List;
 
 @Builder
 @Data
-public class jwtResponse {
+public class JwtResponse {
     private final String grantType;
     private final String accessToken;
     private final String refreshToken;

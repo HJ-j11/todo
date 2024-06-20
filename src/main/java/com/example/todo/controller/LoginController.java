@@ -3,16 +3,18 @@ package com.example.todo.controller;
 import com.example.todo.dto.LoginDto;
 import com.example.todo.dto.SignUpDto;
 import com.example.todo.dto.api.ApiResponse;
-import com.example.todo.entity.jwt.jwtResponse;
+import com.example.todo.entity.jwt.JwtResponse;
 import com.example.todo.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class LoginController {
@@ -20,10 +22,11 @@ public class LoginController {
 
     @Operation(summary = "로그인")
     @PostMapping("/sign-in")
-    public ApiResponse<jwtResponse> signIn(@RequestBody LoginDto loginDto) {
+    public ApiResponse<JwtResponse> signIn(@RequestBody LoginDto loginDto) {
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
-        jwtResponse jwtResponse = memberService.signIn(username, password);
+        JwtResponse jwtResponse = memberService.signIn(username, password);
+        log.info("Member Info ={}", jwtResponse);
         return ApiResponse.success(jwtResponse);
     }
 

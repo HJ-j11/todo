@@ -1,10 +1,7 @@
 package com.example.todo.util;
 
-import com.example.todo.entity.jwt.jwtResponse;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.example.todo.entity.jwt.JwtResponse;
+import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,7 +29,7 @@ public class JwtUtils {
      * 토큰 생성
      */
 
-    public jwtResponse generateTokenByUserDetails(Authentication authentication) {
+    public JwtResponse generateTokenByUserDetails(Authentication authentication) {
         /*
          * 권한 가져오기
          * */
@@ -60,7 +57,7 @@ public class JwtUtils {
         * Jwt Response 반환
         * */
         
-        return jwtResponse.builder()
+        return JwtResponse.builder()
                 .grantType("Bearer")
                 .username(userDetails.getUsername())
                 .roles(Arrays.stream(authorities.split(",")).toList())
@@ -159,5 +156,21 @@ public class JwtUtils {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(secretKey.getBytes()).build().parseClaimsJws(token);
+            return true;
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            log.info("Invalid JWT Token", e);
+        } catch (ExpiredJwtException e) {
+            log.info("Expired JWT Token", e);
+        } catch (UnsupportedJwtException e) {
+            log.info("Unsupported JWT Token", e);
+        } catch (IllegalArgumentException e) {
+            log.info("JWT claims string is empty.", e);
+        }
+        return false;
     }
 }
