@@ -3,7 +3,7 @@ package com.example.todo.config;
 import com.example.todo.filter.JwtAuthenticationFilter;
 import com.example.todo.handler.CustomAccessDeniedHandler;
 import com.example.todo.handler.CustomAuthenticationEntryPoint;
-import com.example.todo.util.JwtUtils;
+import com.example.todo.provider.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final JwtUtils jwtUtils;
+    private final JwtProvider jwtProvider;
     private final CustomAuthenticationEntryPoint entryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
 
@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .requestMatchers("/members/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> {
                     exception.authenticationEntryPoint(entryPoint);
                     exception.accessDeniedHandler(accessDeniedHandler);
@@ -73,6 +73,7 @@ public class SecurityConfig {
         configuration.addAllowedOrigin("http://localhost:5173");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
+        configuration.addExposedHeader("Set-Cookie");
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
 

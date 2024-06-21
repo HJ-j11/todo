@@ -1,7 +1,10 @@
-package com.example.todo.util;
+package com.example.todo.provider;
 
+import com.example.todo.entity.error.UserErrorCode;
+import com.example.todo.entity.exception.RestApiException;
 import com.example.todo.entity.jwt.JwtResponse;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class JwtUtils {
+public class JwtProvider {
     // 설정파일로 빼서 환경변수로 사용하는 것을 권장
     @Value("${jwt.secret}")
     private String secretKey;
@@ -48,7 +51,7 @@ public class JwtUtils {
         * */
         
         String refreshToken = Jwts.builder()
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(new SecretKeySpec(secretKey.getBytes(),
                         SignatureAlgorithm.HS512.getJcaName()))
                 .compact();
@@ -164,8 +167,10 @@ public class JwtUtils {
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
+            throw new RestApiException(UserErrorCode.INVALID_TOKEN);
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT Token", e);
+            throw new RestApiException(UserErrorCode.EXPIRED_TOKEN);
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token", e);
         } catch (IllegalArgumentException e) {

@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum UserErrorCode implements ErrorCode {
 
-    INACTIVE_USER(HttpStatus.BAD_REQUEST, "User is inactive"),;
+    INACTIVE_USER(HttpStatus.BAD_REQUEST, "User is inactive"),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "Invalid token"),
+    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "Expired token");
 
     private final HttpStatus httpStatus;
     private final String message;

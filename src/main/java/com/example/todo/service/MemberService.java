@@ -6,7 +6,7 @@ import com.example.todo.dto.SignUpDto;
 import com.example.todo.entity.Member;
 import com.example.todo.entity.jwt.JwtResponse;
 import com.example.todo.mapper.MemberMapper;
-import com.example.todo.util.JwtUtils;
+import com.example.todo.provider.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +22,7 @@ import java.util.List;
 public class MemberService {
     private final MemberMapper memberMapper;
     private final ModelMapper modelMapper;
-    private final JwtUtils jwtUtils;
+    private final JwtProvider jwtProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
 
@@ -48,7 +48,7 @@ public class MemberService {
          * authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
          * */
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        return jwtUtils.generateTokenByUserDetails(authentication);
+        return jwtProvider.generateTokenByUserDetails(authentication);
     }
 
     public void signUp(SignUpDto signUpDto) {
