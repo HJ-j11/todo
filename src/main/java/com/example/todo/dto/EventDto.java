@@ -1,16 +1,16 @@
-package com.example.todo.entity;
+package com.example.todo.dto;
 
 import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Builder
-@Data
-@ToString
-@AllArgsConstructor
 @NoArgsConstructor
-public class Post {
-    private Long id;
+@AllArgsConstructor
+public class EventDto {
+    private int id;
     private String title;
     private String content;
     private LocalDateTime createdAt;

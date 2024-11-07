@@ -1,7 +1,7 @@
 package com.example.todo;
 
-import com.example.todo.dto.PostDto;
-import com.example.todo.entity.Post;
+import com.example.todo.dto.EventDto;
+import com.example.todo.entity.Event;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultHandler;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,17 +43,17 @@ public class TodoApplicationTest {
     @Test
     public void createPostTest() throws Exception {
         // Given
-        Post post = Post.builder()
+        Event event = Event.builder()
                 .id(10L)
                 .title("test title")
-                .content("test content")
+                .location("test content")
                 .createdAt(LocalDateTime.of(2024, 5, 13, 16, 30))
                 .build();
 
         // When
         ResultActions resultActions = mockMvc.perform(post("/posts")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(post))
+                .content(objectMapper.writeValueAsString(event))
         );
 
         //Then
@@ -90,7 +88,7 @@ public class TodoApplicationTest {
                 .andReturn();
 
         String responseBody = mvcResult.getResponse().getContentAsString();
-        List<PostDto> posts =  objectMapper.readValue(responseBody, List.class);
+        List<EventDto> posts =  objectMapper.readValue(responseBody, List.class);
         assertEquals(posts.size(), 14);
     }
 }
