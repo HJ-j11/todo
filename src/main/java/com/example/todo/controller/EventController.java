@@ -32,7 +32,7 @@ public class EventController {
 
     @Operation( summary = "Event 단건 조회")
     @GetMapping("/events/{id}")
-    public ApiResponse<EventDto> findEventById(@PathVariable int id) {
+    public ApiResponse<EventDto> findEventById(@PathVariable Long id) {
         EventDto event = eventService.getEventById(id);
         if(event == null)
             throw new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND);
@@ -48,14 +48,14 @@ public class EventController {
 
     @Operation( summary = "Event 수정")
     @PutMapping("/events/{id}")
-    public ApiResponse<Void> updateEvent(@PathVariable int id, @RequestBody EventDto eventDto) {
+    public ApiResponse<Void> updateEvent(@PathVariable Long id, @RequestBody EventDto eventDto) {
         eventService.updateEvent(id, eventDto);
         return ApiResponse.successWithoutContent();
     }
 
     @Operation( summary = "Event 삭제")
     @DeleteMapping("/events/{id}")
-    public ApiResponse<Void> deleteEvent(@PathVariable int id) {
+    public ApiResponse<Void> deleteEvent(@PathVariable Long id) {
         eventService.deleteEvent(id);
         return ApiResponse.successWithoutContent();
     }

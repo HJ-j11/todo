@@ -1,5 +1,7 @@
 package com.example.todo.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,7 +12,9 @@ import java.time.LocalDateTime;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Event {
+    @Id
     private Long id;
     private String title;
     private String startDate;

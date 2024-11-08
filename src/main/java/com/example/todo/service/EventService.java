@@ -10,11 +10,11 @@ import java.util.Optional;
 public interface EventService {
     public List<EventDto> findAllEvent(Pageable pageable);
 
-    public EventDto getEventById(int id);
+    public EventDto getEventById(Long id);
 
     public void createEvent(EventDto eventDto);
 
-    public void updateEvent(int id, EventDto eventDto);
+    public void updateEvent(Long id, EventDto eventDto);
 
-    public void deleteEvent(int id);
+    public void deleteEvent(Long id);
 }

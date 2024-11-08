@@ -31,9 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
     private CustomUserDetails createUserDetails(Member member) {
-        String roles = member.getUserRoles().stream()
-                .map(UserRole::getValue)
-                .collect(Collectors.joining(","));
+        String roles = member.getUserRole().getValue();
         return new CustomUserDetails(member.getId(), member.getUsername(), member.getPassword(), roles);
     }
 }

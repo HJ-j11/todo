@@ -4,7 +4,7 @@ import com.example.todo.dto.LoginDto;
 import com.example.todo.dto.SignUpDto;
 import com.example.todo.dto.api.ApiResponse;
 import com.example.todo.entity.jwt.jwtResponse;
-import com.example.todo.service.MemberService;
+import com.example.todo.service.MemberServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class LoginController {
-    private final MemberService memberService;
+    private final MemberServiceImpl memberService;
 
     @Operation(summary = "로그인")
     @PostMapping("/sign-in")
