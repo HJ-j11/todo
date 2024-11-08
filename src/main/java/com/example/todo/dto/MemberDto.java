@@ -10,5 +10,6 @@ import java.time.LocalDateTime;
 public class MemberDto {
     private Long id;
     private String name;
+    private String userRole;
     private LocalDateTime createdAt;
 }

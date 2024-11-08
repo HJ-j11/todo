@@ -2,6 +2,11 @@ package com.example.todo;
 
 import com.example.todo.dto.EventDto;
 import com.example.todo.entity.Event;
+import com.example.todo.entity.Member;
+import com.example.todo.entity.jwt.CustomUserDetails;
+import com.example.todo.entity.jwt.jwtResponse;
+import com.example.todo.repository.MemberRepository;
+import com.example.todo.service.MemberServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +22,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,6 +41,12 @@ public class TodoApplicationTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private MemberServiceImpl memberService;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -90,5 +102,18 @@ public class TodoApplicationTest {
         String responseBody = mvcResult.getResponse().getContentAsString();
         List<EventDto> posts =  objectMapper.readValue(responseBody, List.class);
         assertEquals(posts.size(), 14);
+    }
+
+    @DisplayName("Member UserRole 확인")
+    @Test
+    public void checkUserRole() throws Exception {
+        Optional<Member> member = memberRepository.findMemberByUsername("admin");
+        assertEquals("ADMIN", member.get().getUserRole().name());
+    }
+
+    @DisplayName("관리자 로그인 확인")
+    @Test
+    public void loginTest() throws Exception {
+        jwtResponse loginResponse = memberService.signIn("admin", "admin");
     }
 }

@@ -1,5 +1,6 @@
 package com.example.todo.entity.jwt;
 
+import com.example.todo.entity.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,18 +28,17 @@ public class CustomUserDetails implements UserDetails {
         return authorities;
     }
 
-    public CustomUserDetails(Long id, String username, String password, String roles) {
+    public CustomUserDetails(Long id, String username, String password, UserRole userRole) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.authorities = createAuthorities(roles);
+        this.authorities = createAuthorities(userRole);
     }
 
-    private Collection<GrantedAuthority> createAuthorities(String roles) {
+    private Collection<GrantedAuthority> createAuthorities(UserRole userRole) {
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        for (String role : roles.split(",")) {
-            if(!StringUtils.hasText(role)) continue;
-            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+role));
+        if (userRole != null) {
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.name()));
         }
         return grantedAuthorities;
     }

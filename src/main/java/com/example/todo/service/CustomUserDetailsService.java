@@ -31,7 +31,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
     private CustomUserDetails createUserDetails(Member member) {
-        String roles = member.getUserRole().getValue();
-        return new CustomUserDetails(member.getId(), member.getUsername(), member.getPassword(), roles);
+        return new CustomUserDetails(member.getId(), member.getUsername(), member.getPassword(), member.getUserRole());
     }
 }
