@@ -2,13 +2,14 @@ package com.example.todo.service;
 
 import com.example.todo.dto.EventDto;
 import com.example.todo.entity.Event;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface EventService {
-    public List<EventDto> findAllEvent(Pageable pageable);
+    public Page<EventDto> findAllEvent(Pageable pageable);
 
     public EventDto getEventById(Long id);
 

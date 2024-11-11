@@ -7,6 +7,7 @@ import com.example.todo.repository.EventRepository;
 import com.example.todo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +20,8 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
 
-    public List<EventDto> findAllEvent(Pageable pageable) {
-        List<Event> events = eventRepository.findAll();
-        return events.stream().map(event -> modelMapper.map(event, EventDto.class)).toList();
+    public Page<EventDto> findAllEvent(Pageable pageable) {
+        return eventRepository.findAll(pageable).map(event -> modelMapper.map(event, EventDto.class));
     }
 
     public EventDto getEventById(Long id) {

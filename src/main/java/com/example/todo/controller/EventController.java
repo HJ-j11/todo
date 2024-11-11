@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +26,9 @@ public class EventController {
 
     @Operation( summary = "Event List 조회", description = "Event 전체를 조회한다.")
     @GetMapping("/events")
-    public ApiResponse<List<EventDto>> findAllEvents(@PageableDefault(size=5) Pageable pageable) {
-        List<EventDto> Events = eventService.findAllEvent(pageable);
-        return ApiResponse.success(Events);
+    public ApiResponse<Page<EventDto>> findAllEvents(Pageable pageable) {
+        Page<EventDto> events = eventService.findAllEvent(pageable);
+        return ApiResponse.success(events);
     }
 
     @Operation( summary = "Event 단건 조회")
