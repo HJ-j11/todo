@@ -14,7 +14,7 @@ import java.util.List;
 public class UserTypeHandler extends BaseTypeHandler<List<UserRole>> {
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, List<UserRole> parameter, JdbcType jdbcType) throws SQLException {
-        String roles = String.join(",", parameter.stream().map(UserRole::getValue).toArray(String[]::new));
+        String roles = String.join(",", parameter.stream().map(Enum::name).toArray(String[]::new));
         ps.setString(i, roles);
     }
 

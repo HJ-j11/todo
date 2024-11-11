@@ -9,7 +9,8 @@
         <result column="username" property="username" javaType="String"/>
         <result column="password" property="password" javaType="String"/>
         <result column="created_at" property="createdAt"/>
-        <result column="member_role" property="userRoles" typeHandler="com.example.todo.handler.UserTypeHandler"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="user_role" property="userRoles" typeHandler="com.example.todo.handler.UserTypeHandler"/>
     </resultMap>
     <select id="selectAllMembers" resultType="com.example.todo.entity.Member">
         SELECT *

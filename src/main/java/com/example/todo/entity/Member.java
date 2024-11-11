@@ -22,8 +22,11 @@ public class Member {
     private String name;
     private String username;
     private String password;
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+    @Column(name="updated_at")
     private LocalDateTime updatedAt;
     @Enumerated(EnumType.STRING)
+    @Column(name="user_role")
     private UserRole userRole;
 }

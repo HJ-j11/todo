@@ -25,7 +25,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -122,7 +124,17 @@ public class TodoApplicationTest {
     @DisplayName("관리자 로그인 확인")
     @Test
     public void loginTest() throws Exception {
-        jwtResponse loginResponse = memberService.signIn("admin", "admin");
+        Map<String, String> loginRequest = new HashMap<>();
+        loginRequest.put("username", "admin");
+        loginRequest.put("password", "admin");
+
+        String loginJson = objectMapper.writeValueAsString(loginRequest);
+
+        mockMvc.perform(post("/auth/sign-in")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(loginJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").exists()); // JWT 토큰 반환 검증
     }
 
     @DisplayName("Bcrypt 암호화")

@@ -7,6 +7,7 @@ import com.example.todo.entity.error.CommonErrorCode;
 import com.example.todo.entity.exception.RestApiException;
 import com.example.todo.entity.jwt.CustomUserDetails;
 import com.example.todo.mapper.MemberMapper;
+import com.example.todo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,11 +20,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    private final MemberMapper memberMapper;
+    private final MemberRepository memberRepository;
 
     @Override
     public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Member> member = memberMapper.findMemberByUsername(username);
+        Optional<Member> member = memberRepository.findMemberByUsername(username);
         if(member.isPresent()) {
             return createUserDetails(member.get());
         } else {
