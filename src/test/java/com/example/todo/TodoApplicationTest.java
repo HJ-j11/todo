@@ -8,13 +8,17 @@ import com.example.todo.entity.jwt.jwtResponse;
 import com.example.todo.repository.MemberRepository;
 import com.example.todo.service.MemberServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -39,6 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TodoApplicationTest {
     private static final int userId = 2;
 
+    private static final Logger log = LoggerFactory.getLogger(TodoApplicationTest.class);
     @Autowired
     private MockMvc mockMvc;
 
@@ -50,6 +55,9 @@ public class TodoApplicationTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @DisplayName("글 작성")
     @Test
@@ -115,5 +123,13 @@ public class TodoApplicationTest {
     @Test
     public void loginTest() throws Exception {
         jwtResponse loginResponse = memberService.signIn("admin", "admin");
+    }
+
+    @DisplayName("Bcrypt 암호화")
+    @Test
+    public void BcryptEncodedPassword() {
+        String password = "admin";
+        String encryptedPassword = passwordEncoder.encode(password);
+        log.info("encryptedPassword = {}", encryptedPassword);
     }
 }

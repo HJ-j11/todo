@@ -14,6 +14,6 @@ public class EventDto {
     private String title;
     private String startDate;
     private String endDate;
+    private String imageUrl;
     private String location;
-    private LocalDateTime createdAt;
 }
