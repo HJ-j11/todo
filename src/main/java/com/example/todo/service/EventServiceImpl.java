@@ -8,6 +8,7 @@ import com.example.todo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,8 @@ public class EventServiceImpl implements EventService {
     private final ModelMapper modelMapper;
 
     public Page<EventDto> findAllEvent(Pageable pageable) {
-        return eventRepository.findAll(pageable).map(event -> modelMapper.map(event, EventDto.class));
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
+        return eventRepository.findAll(pageRequest).map(event -> modelMapper.map(event, EventDto.class));
     }
 
     public EventDto getEventById(Long id) {
