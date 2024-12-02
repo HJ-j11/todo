@@ -1,6 +1,8 @@
 spring:
-#  batch:
-#    jdbc:
+  batch:
+    job:
+      enabled: false
+  #    jdbc:
 #      initialize-schema: always
   jpa:
     database: postgresql
@@ -11,13 +13,16 @@ spring:
       hibernate:
         format_sql: true
   datasource:
-    hikari:
-      maximum-pool-size: 4
-#    driver-class-name:
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:postgresql://127.0.0.1:5432/postgres
-    username: admin
-    password: pass
+    meta:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      url: jdbc:log4jdbc:postgresql://127.0.0.1:5432/postgres
+      username: admin
+      password: pass
+    data:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      url: jdbc:log4jdbc:postgresql://127.0.0.1:5432/testdb
+      username: admin
+      password: pass
   # 404 Error
   mvc:
     throw-exception-if-no-handler-found: true
